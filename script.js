@@ -799,10 +799,10 @@ function selectAll(){
 【011】Drag
 =========================================================== */
 
-let dragTarget=null;
+let dragTarget = null;
 
-let dragOffsetX=0;
-let dragOffsetY=0;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
 
 /**
  * ドラッグ開始
@@ -814,7 +814,7 @@ objectLayer.addEventListener(
 
     event=>{
 
-        const target=
+        const target =
 
             event.target.closest(
 
@@ -828,7 +828,7 @@ objectLayer.addEventListener(
 
         }
 
-        const id=
+        const id =
 
             target.dataset.id;
 
@@ -840,22 +840,30 @@ objectLayer.addEventListener(
 
         );
 
-dragTarget =
-    getObject(id);
+        dragTarget =
 
-if(!dragTarget){
+            getObject(id);
 
-    return;
+        if(!dragTarget){
 
-}
+            return;
 
-saveHistory();
+        }
 
-dragOffsetX =
-    event.clientX - dragTarget.x;
+        saveHistory();
 
-dragOffsetY =
-    event.clientY - dragTarget.y;
+        dragOffsetX =
+
+            event.clientX -
+
+            dragTarget.x;
+
+        dragOffsetY =
+
+            event.clientY -
+
+            dragTarget.y;
+
     }
 
 );
@@ -876,27 +884,29 @@ window.addEventListener(
 
         }
 
-        dragTarget.x=
+        dragTarget.x =
 
             snap(
 
-                event.clientX-
+                event.clientX -
 
                 dragOffsetX
 
             );
 
-        dragTarget.y=
+        dragTarget.y =
 
             snap(
 
-                event.clientY-
+                event.clientY -
 
                 dragOffsetY
 
             );
 
         renderObjects();
+
+        updateProperty();
 
     }
 
@@ -918,15 +928,15 @@ window.addEventListener(
 
         }
 
+        dragTarget = null;
+
+        refresh();
+
         updateSaveStatus(
 
             "未保存"
 
         );
-
-        dragTarget=null;
-
-        refresh();
 
     }
 
