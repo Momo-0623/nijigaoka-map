@@ -878,3 +878,35 @@ button:active{
     flex:1;
 
 }
+
+/* ==========================================================
+【017】Canvas State
+========================================================== */
+
+#canvas.dragging{
+
+    cursor:grabbing;
+
+}
+
+#canvas.dragging .map-object{
+
+    cursor:grabbing;
+
+}
+
+/* ==========================================================
+【018】Selection Box
+========================================================== */
+
+.selection-box{
+
+    position:absolute;
+
+    border:1px dashed #2563eb;
+
+    background:rgba(37,99,235,.15);
+
+    pointer-events:none;
+
+}
