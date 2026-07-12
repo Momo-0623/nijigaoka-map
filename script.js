@@ -653,7 +653,9 @@ function refresh(){
 
     updateZoomLabel();
 
-  updateProperty();
+    updateProperty();
+
+    updateSaveStatus("保存済み");
 
 }
 
