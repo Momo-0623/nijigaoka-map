@@ -110,6 +110,8 @@ function createRoom(
 
 ){
 
+    saveInsideHistory();
+
     const room={
 
         id:"room-"+
@@ -144,6 +146,8 @@ function createRoom(
 
     Inside.rooms.push(room);
 
+    Inside.selected=room.id;
+
     renderRooms();
 
     return room;
@@ -170,6 +174,8 @@ function getRoom(id){
 
 function deleteRoom(id){
 
+    saveInsideHistory();
+
     Inside.rooms=
 
         Inside.rooms.filter(
@@ -178,6 +184,32 @@ function deleteRoom(id){
 
         );
 
+    if(
+
+        Inside.selected===id
+
+    ){
+
+        Inside.selected=null;
+
+    }
+
+    renderRooms();
+
+}
+
+/**
+ * 全削除
+ */
+
+function clearRooms(){
+
+    saveInsideHistory();
+
+    Inside.rooms=[];
+
+    Inside.selected=null;
+
     renderRooms();
 
 }
@@ -185,6 +217,10 @@ function deleteRoom(id){
 /* ===========================================================
 【005】Render
 =========================================================== */
+
+/**
+ * 全描画
+ */
 
 function renderRooms(){
 
@@ -201,6 +237,10 @@ function renderRooms(){
     );
 
 }
+
+/**
+ * 1部屋描画
+ */
 
 function drawRoom(room){
 
@@ -278,6 +318,20 @@ function drawRoom(room){
 
     }
 
+    if(
+
+        Inside.selected===room.id
+
+    ){
+
+        div.classList.add(
+
+            "selected"
+
+        );
+
+    }
+
     insideEditor.appendChild(
 
         div
@@ -286,18 +340,188 @@ function drawRoom(room){
 
 }
 
+/**
+ * 再描画
+ */
+
+function refreshInside(){
+
+    renderRooms();
+
+}
+
 /* ===========================================================
-【006】Drag
+【006】History
 =========================================================== */
 
-let dragRoom=null;
+/**
+ * 履歴保存
+ */
 
-let dragOffsetX=0;
+function saveInsideHistory(){
 
-let dragOffsetY=0;
+    Inside.history.push(
+
+        clone(
+
+            Inside.rooms
+
+        )
+
+    );
+
+    if(
+
+        Inside.history.length>100
+
+    ){
+
+        Inside.history.shift();
+
+    }
+
+    Inside.redo=[];
+
+}
 
 /**
- * 教室選択・ドラッグ開始
+ * Undo
+ */
+
+function undoInside(){
+
+    if(
+
+        Inside.history.length===0
+
+    ){
+
+        return;
+
+    }
+
+    Inside.redo.push(
+
+        clone(
+
+            Inside.rooms
+
+        )
+
+    );
+
+    Inside.rooms=
+
+        Inside.history.pop();
+
+    Inside.selected=null;
+
+    refreshInside();
+
+}
+
+/**
+ * Redo
+ */
+
+function redoInside(){
+
+    if(
+
+        Inside.redo.length===0
+
+    ){
+
+        return;
+
+    }
+
+    Inside.history.push(
+
+        clone(
+
+            Inside.rooms
+
+        )
+
+    );
+
+    Inside.rooms=
+
+        Inside.redo.pop();
+
+    Inside.selected=null;
+
+    refreshInside();
+
+}
+
+/**
+ * 履歴削除
+ */
+
+function clearInsideHistory(){
+
+    Inside.history=[];
+
+    Inside.redo=[];
+
+}
+
+/* ===========================================================
+【007】Selection
+=========================================================== */
+
+/**
+ * 選択解除
+ */
+
+function clearRoomSelection(){
+
+    Inside.selected=null;
+
+    refreshInside();
+
+}
+
+/**
+ * 教室選択
+ */
+
+function selectRoom(id){
+
+    Inside.selected=id;
+
+    refreshInside();
+
+}
+
+/**
+ * 教室取得（選択中）
+ */
+
+function selectedRoom(){
+
+    if(
+
+        !Inside.selected
+
+    ){
+
+        return null;
+
+    }
+
+    return getRoom(
+
+        Inside.selected
+
+    );
+
+}
+
+/**
+ * クリック選択
  */
 
 insideEditor.addEventListener(
@@ -306,7 +530,56 @@ insideEditor.addEventListener(
 
     event=>{
 
-        const target=
+        const room=
+
+            event.target.closest(
+
+                ".inside-room"
+
+            );
+
+        if(
+
+            !room
+
+        ){
+
+            clearRoomSelection();
+
+            return;
+
+        }
+
+        selectRoom(
+
+            room.dataset.id
+
+        );
+
+    }
+
+);
+
+/* ===========================================================
+【008】Drag
+=========================================================== */
+
+let roomDrag = null;
+
+let roomOffsetX = 0;
+let roomOffsetY = 0;
+
+/**
+ * ドラッグ開始
+ */
+
+insideEditor.addEventListener(
+
+    "pointerdown",
+
+    event=>{
+
+        const target =
 
             event.target.closest(
 
@@ -320,7 +593,7 @@ insideEditor.addEventListener(
 
         }
 
-        const room=
+        roomDrag =
 
             getRoom(
 
@@ -328,33 +601,31 @@ insideEditor.addEventListener(
 
             );
 
-        if(!room){
+        if(!roomDrag){
 
             return;
 
         }
 
-        if(room.locked){
+        saveInsideHistory();
 
-            return;
+        selectRoom(
 
-        }
+            roomDrag.id
 
-        Inside.selected=
+        );
 
-            room.id;
+        roomOffsetX =
 
-        dragRoom=
+            event.clientX -
 
-            room;
+            roomDrag.x;
 
-        dragOffsetX=
+        roomOffsetY =
 
-            event.offsetX;
+            event.clientY -
 
-        dragOffsetY=
-
-            event.offsetY;
+            roomDrag.y;
 
     }
 
@@ -370,43 +641,31 @@ window.addEventListener(
 
     event=>{
 
-        if(!dragRoom){
+        if(!roomDrag){
 
             return;
 
         }
 
-        const rect=
-
-            insideEditor.getBoundingClientRect();
-
-        dragRoom.x=
+        roomDrag.x =
 
             Math.round(
 
-                (event.clientX-
+                (event.clientX - roomOffsetX)
 
-                rect.left-
+                / Inside.grid
 
-                dragOffsetX)
+            ) * Inside.grid;
 
-/Inside.grid
-
-            )*Inside.grid;
-
-        dragRoom.y=
+        roomDrag.y =
 
             Math.round(
 
-                (event.clientY-
+                (event.clientY - roomOffsetY)
 
-                rect.top-
+                / Inside.grid
 
-                dragOffsetY)
-
-/Inside.grid
-
-            )*Inside.grid;
+            ) * Inside.grid;
 
         renderRooms();
 
@@ -424,16 +683,27 @@ window.addEventListener(
 
     ()=>{
 
-        dragRoom=null;
+        if(!roomDrag){
+
+            return;
+
+        }
+
+        roomDrag = null;
+
+        refreshInside();
 
     }
 
 );
 
-
 /* ===========================================================
-【007】Dialog
+【009】Button Event
 =========================================================== */
+
+/**
+ * 校舎内部編集 開閉
+ */
 
 btnInside.addEventListener(
 
@@ -441,56 +711,293 @@ btnInside.addEventListener(
 
     ()=>{
 
-        renderRooms();
+        if(
 
-        insideDialog.showModal();
+            insideDialog
+
+        ){
+
+            insideDialog.showModal();
+
+            renderRooms();
+
+        }
+
+    }
+
+);
+
+
+/**
+ * 教室追加テスト
+ */
+
+function addInsideRoom(){
+
+    createRoom(
+
+        "room",
+
+        "教室",
+
+        40,
+
+        40
+
+    );
+
+}
+
+
+/**
+ * 削除
+ */
+
+function deleteSelectedRoom(){
+
+    if(
+
+        !Inside.selected
+
+    ){
+
+        return;
+
+    }
+
+    deleteRoom(
+
+        Inside.selected
+
+    );
+
+}
+
+
+/**
+ * Undo / Redo
+
+ */
+
+function insideUndo(){
+
+    undoInside();
+
+}
+
+
+function insideRedo(){
+
+    redoInside();
+
+}
+
+
+/**
+ * キーボード操作
+ */
+
+window.addEventListener(
+
+    "keydown",
+
+    event=>{
+
+        if(
+
+            !insideDialog ||
+
+            !insideDialog.open
+
+        ){
+
+            return;
+
+        }
+
+
+        if(
+
+            event.key==="Delete"
+
+        ){
+
+            deleteSelectedRoom();
+
+        }
+
+
+        if(
+
+            event.ctrlKey &&
+
+            event.key.toLowerCase()==="z"
+
+        ){
+
+            event.preventDefault();
+
+            insideUndo();
+
+        }
+
+
+        if(
+
+            event.ctrlKey &&
+
+            event.key.toLowerCase()==="y"
+
+        ){
+
+            event.preventDefault();
+
+            insideRedo();
+
+        }
 
     }
 
 );
 
 /* ===========================================================
-【008】JSON
+【010】Zoom / Grid
 =========================================================== */
 
-function exportInside(){
+/**
+ * ズーム変更
+ */
 
-    const data={
+function setInsideZoom(value){
 
-        version:"1.0",
+    Inside.zoom =
 
-        rooms:Inside.rooms
+        Math.min(
 
-    };
+            3,
 
-    return JSON.stringify(
+            Math.max(
 
-        data,
+                0.25,
 
-        null,
+                value
 
-        2
+            )
+
+        );
+
+    insideEditor.style.transform=
+
+        `scale(${Inside.zoom})`;
+
+    insideEditor.style.transformOrigin=
+
+        "top left";
+
+}
+
+
+/**
+ * グリッド吸着
+ */
+
+function snapInside(value){
+
+    return Math.round(
+
+        value / Inside.grid
+
+    ) * Inside.grid;
+
+}
+
+
+/**
+ * ズームイン
+
+ */
+
+function zoomInsideIn(){
+
+    setInsideZoom(
+
+        Inside.zoom + 0.1
 
     );
 
 }
 
-function importInside(json){
 
-    const data=
+/**
+ * ズームアウト
 
-        JSON.parse(json);
+ */
 
-    Inside.rooms=
+function zoomInsideOut(){
 
-        data.rooms||[];
+    setInsideZoom(
+
+        Inside.zoom - 0.1
+
+    );
+
+}
+
+
+/**
+ * 初期化
+
+ */
+
+function initializeInside(){
+
+    setInsideZoom(
+
+        1
+
+    );
 
     renderRooms();
 
 }
 
 /* ===========================================================
-【009】Start
+【011】Start
 =========================================================== */
 
-renderRooms();
+/**
+ * 内部エディタ初期化
+ */
+
+function initializeInside(){
+
+    Inside.floor = 1;
+
+    Inside.rooms = [];
+
+    Inside.selected = null;
+
+    Inside.history = [];
+
+    Inside.redo = [];
+
+    Inside.zoom = 1;
+
+    Inside.nextID = 1;
+
+    setInsideZoom(
+
+        1
+
+    );
+
+    renderRooms();
+
+}
+
+
+/**
+ * 起動
+ */
+
+initializeInside();
