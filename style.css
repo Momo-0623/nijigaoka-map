@@ -772,3 +772,109 @@ button:active{
     display:none;
 
 }
+
+/* ==========================================================
+【014】Inside Room
+========================================================== */
+
+.inside-room{
+
+    position:absolute;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#ffffff;
+
+    border:2px solid #64748b;
+
+    border-radius:6px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    cursor:move;
+
+    user-select:none;
+
+}
+
+.inside-room:hover{
+
+    border-color:#2563eb;
+
+}
+
+.inside-room.locked{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+}
+
+/* ==========================================================
+【015】Tool Item
+========================================================== */
+
+.tool-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:10px;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    background:white;
+
+    cursor:pointer;
+
+}
+
+.tool-item:hover{
+
+    background:#eef4ff;
+
+}
+
+/* ==========================================================
+【016】Layer
+========================================================== */
+
+.layer-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px;
+
+    border-bottom:1px solid var(--border);
+
+    cursor:pointer;
+
+}
+
+.layer-item:hover{
+
+    background:#eef4ff;
+
+}
+
+.layer-name{
+
+    flex:1;
+
+}
