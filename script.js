@@ -1610,106 +1610,182 @@ btnPaste.addEventListener(
 );
 
 /* ===========================================================
-【007】Object
+【017】JSON Save / Load
 =========================================================== */
 
 /**
- * オブジェクト作成
+ * JSON保存
  */
 
-function createObject(type,name,x,y){
+function saveJSON(){
 
-    saveHistory();
+    const data={
 
-    const object={
+        version:App.version,
 
-        id:generateID(),
+        nextID:App.nextID,
 
-        type:type,
-
-        name:name,
-
-        x:snap(x),
-
-        y:snap(y),
-
-        width:120,
-
-        height:60,
-
-        rotation:0,
-
-        opacity:100,
-
-        visible:true,
-
-        locked:false,
-
-        floor:1,
-
-        z:App.objects.length+1
+        objects:App.objects
 
     };
 
-    App.objects.push(object);
+    const blob=
 
-    refresh();
+        new Blob(
 
-    updateSaveStatus("未保存");
+            [
 
-    showToast("追加しました");
+                JSON.stringify(
 
-    return object;
+                    data,
 
-}
+                    null,
 
-/**
- * ID検索
- */
+                    2
 
-function getObject(id){
+                )
 
-    return App.objects.find(
+            ],
 
-        object=>object.id===id
+            {
+
+                type:"application/json"
+
+            }
+
+        );
+
+    const link=
+
+        document.createElement("a");
+
+    link.download=
+
+        "nijigaoka-map.json";
+
+    link.href=
+
+        URL.createObjectURL(blob);
+
+    link.click();
+
+    URL.revokeObjectURL(
+
+        link.href
+
+    );
+
+    updateSaveStatus(
+
+        "保存済み"
+
+    );
+
+    showToast(
+
+        "保存しました"
 
     );
 
 }
 
 /**
- * 削除
+ * JSON読込
  */
 
-function deleteObject(id){
+function loadJSON(file){
 
-    App.objects =
+    const reader=
 
-        App.objects.filter(
+        new FileReader();
 
-            object=>object.id!==id
+    reader.onload=()=>{
 
-        );
+        try{
 
-    refresh();
+            const json=
 
-}
+                JSON.parse(
 
-/**
- * 全削除
- */
+                    reader.result
 
-function clearObjects(){
+                );
 
-    saveHistory();
+            saveHistory();
 
-    App.objects=[];
+            App.objects=
 
-    App.selected=[];
+                json.objects||[];
 
-    refresh();
+            App.nextID=
 
-    updateSaveStatus("未保存");
+                json.nextID||
+
+                (
+
+                    App.objects.length
+
+                    ? Math.max(
+
+                        ...App.objects.map(
+
+                            object=>
+
+                            Number(
+
+                                object.id.replace(
+
+                                    "obj-",
+
+                                    ""
+
+                                )
+
+                            )
+
+                        )
+
+                    )+1
+
+                    :1
+
+                );
+
+            App.selected=[];
+
+            refresh();
+
+            updateSaveStatus(
+
+                "保存済み"
+
+            );
+
+            showToast(
+
+                "読み込みました"
+
+            );
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            showToast(
+
+                "JSONの読み込みに失敗しました",
+
+                "error"
+
+            );
+
+        }
+
+    };
+
+    reader.readAsText(file);
 
 }
 
