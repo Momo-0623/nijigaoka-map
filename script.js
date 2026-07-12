@@ -319,7 +319,7 @@ function saveHistory(){
 
     if(
 
-        App.history.length>100
+        App.history.length > 100
 
     ){
 
@@ -327,7 +327,7 @@ function saveHistory(){
 
     }
 
-    App.redo=[];
+    App.redo = [];
 
 }
 
@@ -357,9 +357,13 @@ function undo(){
 
     );
 
-    App.objects=
+    App.objects =
 
         App.history.pop();
+
+    App.selected = [];
+
+    refresh();
 
 }
 
@@ -389,9 +393,13 @@ function redo(){
 
     );
 
-    App.objects=
+    App.objects =
 
         App.redo.pop();
+
+    App.selected = [];
+
+    refresh();
 
 }
 
@@ -401,7 +409,7 @@ function redo(){
 
 function refreshHistory(){
 
-    historyPanel.innerHTML="";
+    historyPanel.innerHTML = "";
 
     App.history
 
@@ -411,7 +419,7 @@ function refreshHistory(){
 
         .forEach((item,index)=>{
 
-            const div=
+            const div =
 
                 document.createElement(
 
@@ -419,15 +427,15 @@ function refreshHistory(){
 
                 );
 
-            div.className=
+            div.className =
 
                 "history-item";
 
-            div.textContent=
+            div.textContent =
 
-                "履歴 "
+                "履歴 " +
 
-                +(App.history.length-index);
+                (App.history.length-index);
 
             historyPanel.appendChild(
 
@@ -483,6 +491,8 @@ function createObject(type,name,x,y){
 
     App.objects.push(object);
 
+    App.selected=[object.id];
+
     refresh();
 
     updateSaveStatus("未保存");
@@ -513,7 +523,7 @@ function getObject(id){
 
 function deleteObject(id){
 
-    App.objects =
+    App.objects=
 
         App.objects.filter(
 
@@ -540,6 +550,8 @@ function clearObjects(){
     refresh();
 
     updateSaveStatus("未保存");
+
+    showToast("全て削除しました");
 
 }
 
@@ -1805,6 +1817,54 @@ function loadJSON(file){
 【018】Button Event
 =========================================================== */
 
+/**
+ * 新規
+ */
+
+btnNew.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        if(
+
+            !confirm(
+
+                "新しいマップを作成しますか？\n未保存の内容は失われます。"
+
+            )
+
+        ){
+
+            return;
+
+        }
+
+        App.objects=[];
+
+        App.selected=[];
+
+        App.history=[];
+
+        App.redo=[];
+
+        App.nextID=1;
+
+        refresh();
+
+        updateSaveStatus("新規");
+
+        showToast("新しいマップを作成しました");
+
+    }
+
+);
+
+/**
+ * 保存
+ */
+
 btnSave.addEventListener(
 
     "click",
@@ -1812,6 +1872,10 @@ btnSave.addEventListener(
     saveJSON
 
 );
+
+/**
+ * 読み込み
+ */
 
 btnLoad.addEventListener(
 
@@ -1851,6 +1915,64 @@ jsonLoader.addEventListener(
 
 );
 
+/**
+ * レイヤークリック
+ */
+
+layerList.addEventListener(
+
+    "click",
+
+    event=>{
+
+        const row=
+
+            event.target.closest(
+
+                ".layer-item"
+
+            );
+
+        if(!row){
+
+            return;
+
+        }
+
+        selectObject(
+
+            row.dataset.id
+
+        );
+
+    }
+
+);
+
+/**
+ * 校舎内部編集
+ */
+
+btnInside.addEventListener(
+
+    "click",
+
+    ()=>{
+
+        if(
+
+            typeof insideDialog !== "undefined"
+
+        ){
+
+            insideDialog.showModal();
+
+        }
+
+    }
+
+);
+
 /* ===========================================================
 【019】PNG Export
 =========================================================== */
@@ -1861,11 +1983,29 @@ jsonLoader.addEventListener(
 
 function exportPNG(){
 
-    html2canvas(canvas).then(image=>{
+    html2canvas(
+
+        canvas,
+
+        {
+
+            backgroundColor:"#ffffff",
+
+            scale:2,
+
+            useCORS:true
+
+        }
+
+    ).then(image=>{
 
         const link=
 
-            document.createElement("a");
+            document.createElement(
+
+                "a"
+
+            );
 
         link.download=
 
@@ -1873,9 +2013,19 @@ function exportPNG(){
 
         link.href=
 
-            image.toDataURL("image/png");
+            image.toDataURL(
+
+                "image/png"
+
+            );
 
         link.click();
+
+        showToast(
+
+            "PNGを書き出しました"
+
+        );
 
     });
 
@@ -1973,11 +2123,21 @@ btnGrid.addEventListener(
 【021】Start
 =========================================================== */
 
+/**
+ * 初期化
+ */
+
 function initialize(){
+
+    setZoom(1);
 
     refresh();
 
-    updateSaveStatus("新規");
+    updateSaveStatus(
+
+        "新規"
+
+    );
 
     updateZoomLabel();
 
@@ -1988,5 +2148,9 @@ function initialize(){
     );
 
 }
+
+/**
+ * 起動
+ */
 
 initialize();
