@@ -483,7 +483,7 @@ function createObject(type,name,x,y){
 
     App.objects.push(object);
 
-    renderObjects();
+    refresh();
 
     updateSaveStatus("未保存");
 
@@ -537,7 +537,9 @@ function clearObjects(){
 
     App.selected=[];
 
-    renderObjects();
+    refresh();
+
+    updateSaveStatus("未保存");
 
 }
 
