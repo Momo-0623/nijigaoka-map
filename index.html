@@ -2,6 +2,11 @@
 <html lang="ja">
 
 <head>
+
+    <!-- ====================================================== -->
+    <!-- Meta -->
+    <!-- ====================================================== -->
+
     <meta charset="UTF-8">
 
     <meta
@@ -14,48 +19,72 @@
 
     <meta
         name="theme-color"
-        content="#1f4fb2">
+        content="#2563eb">
+
+    <meta
+        name="author"
+        content="Mo²">
+
+    <!-- ====================================================== -->
+    <!-- Title -->
+    <!-- ====================================================== -->
 
     <title>
+
         虹ケ丘学園 校内マップメーカー v1.0
+
     </title>
 
+    <!-- ====================================================== -->
     <!-- CSS -->
+    <!-- ====================================================== -->
+
     <link
         rel="stylesheet"
         href="style.css">
 
+    <!-- ====================================================== -->
     <!-- html2canvas -->
+    <!-- ====================================================== -->
+
     <script
-        src="lib/html2canvas.min.js">
+        src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
     </script>
+
 </head>
 
 <body>
 
 <div id="app">
 
-    <!-- ========================= -->
-    <!-- Header -->
-    <!-- ========================= -->
+        <!-- ====================================================== -->
+    <!-- 【002】Header -->
+    <!-- ====================================================== -->
 
     <header id="header">
 
         <div class="header-left">
 
             <img
+
                 id="school-logo"
-                src="assets/logo/logo.png"
-                alt="虹ケ丘学園">
+
+                src="assets/logo/nijigaoka.png"
+
+                alt="虹ケ丘学園 校章">
 
             <div class="title-area">
 
                 <h1>
+
                     虹ケ丘学園
+
                 </h1>
 
                 <p>
+
                     Campus Map Builder
+
                 </p>
 
             </div>
@@ -65,159 +94,241 @@
         <div class="header-right">
 
             <button
+
                 id="new-map"
+
                 class="header-button">
+
                 新規
+
             </button>
 
             <button
+
                 id="save-map"
+
                 class="header-button">
+
                 保存
+
             </button>
 
             <button
+
                 id="load-map"
+
                 class="header-button">
+
                 読込
+
             </button>
 
             <button
+
                 id="export-png"
+
                 class="header-button">
+
                 PNG保存
+
             </button>
 
             <button
+
                 id="open-settings"
+
                 class="header-button">
+
                 設定
+
             </button>
 
         </div>
 
     </header>
 
-    <!-- ========================= -->
-    <!-- Toolbar -->
-    <!-- ========================= -->
+        <!-- ====================================================== -->
+    <!-- 【003】Toolbar -->
+    <!-- ====================================================== -->
 
     <nav id="toolbar">
 
         <button
+
             id="undo"
+
             class="tool-button">
-            Undo
+
+            ↶ Undo
+
         </button>
 
         <button
+
             id="redo"
+
             class="tool-button">
-            Redo
+
+            ↷ Redo
+
         </button>
 
         <div class="toolbar-divider"></div>
 
         <button
+
             id="copy"
+
             class="tool-button">
-            コピー
+
+            📄 コピー
+
         </button>
 
         <button
+
             id="paste"
+
             class="tool-button">
-            貼り付け
+
+            📋 貼り付け
+
         </button>
 
         <button
+
             id="delete"
+
             class="tool-button">
-            削除
+
+            🗑 削除
+
         </button>
 
         <div class="toolbar-divider"></div>
 
         <button
+
             id="zoom-out"
+
             class="tool-button">
-            −
+
+            －
+
         </button>
 
         <span id="zoom-label">
+
             100%
+
         </span>
 
         <button
+
             id="zoom-in"
+
             class="tool-button">
+
             ＋
+
         </button>
 
         <div class="toolbar-divider"></div>
 
         <button
+
             id="toggle-grid"
+
             class="tool-button">
+
             グリッド
+
         </button>
 
         <button
+
             id="toggle-inside"
+
             class="tool-button">
+
             校舎内部編集
+
         </button>
 
     </nav>
 
-    <!-- ========================= -->
-    <!-- Main -->
-    <!-- ========================= -->
+        <!-- ====================================================== -->
+    <!-- 【004】Main Layout -->
+    <!-- ====================================================== -->
 
     <main id="main-layout">
 
-        <!-- ========================= -->
+        <!-- =============================================== -->
         <!-- Left Sidebar -->
-        <!-- ========================= -->
+        <!-- =============================================== -->
 
         <aside id="sidebar-left">
 
             <div class="sidebar-tabs">
 
                 <button
+
                     class="sidebar-tab active"
+
                     data-tab="building">
+
                     建物
+
                 </button>
 
                 <button
+
                     class="sidebar-tab"
+
                     data-tab="room">
+
                     教室
+
                 </button>
 
                 <button
+
                     class="sidebar-tab"
+
                     data-tab="furniture">
+
                     家具
+
                 </button>
 
                 <button
+
                     class="sidebar-tab"
+
                     data-tab="nature">
+
                     自然
+
                 </button>
 
                 <button
+
                     class="sidebar-tab"
+
                     data-tab="road">
+
                     道路
+
                 </button>
 
                 <button
+
                     class="sidebar-tab"
+
                     data-tab="favorite">
+
                     お気に入り
+
                 </button>
 
             </div>
@@ -225,40 +336,50 @@
             <div id="sidebar-content">
 
                 <div
-                    class="tool-category"
-                    id="building-list">
 
-                    <!-- script.jsで生成 -->
+                    id="building-list"
 
-                </div>
-
-                <div
-                    class="tool-category hidden"
-                    id="room-list">
+                    class="tool-category">
 
                 </div>
 
                 <div
-                    class="tool-category hidden"
-                    id="furniture-list">
+
+                    id="room-list"
+
+                    class="tool-category hidden">
 
                 </div>
 
                 <div
-                    class="tool-category hidden"
-                    id="nature-list">
+
+                    id="furniture-list"
+
+                    class="tool-category hidden">
 
                 </div>
 
                 <div
-                    class="tool-category hidden"
-                    id="road-list">
+
+                    id="nature-list"
+
+                    class="tool-category hidden">
 
                 </div>
 
                 <div
-                    class="tool-category hidden"
-                    id="favorite-list">
+
+                    id="road-list"
+
+                    class="tool-category hidden">
+
+                </div>
+
+                <div
+
+                    id="favorite-list"
+
+                    class="tool-category hidden">
 
                 </div>
 
@@ -266,9 +387,9 @@
 
         </aside>
 
-        <!-- ========================= -->
+        <!-- =============================================== -->
         <!-- Canvas -->
-        <!-- ========================= -->
+        <!-- =============================================== -->
 
         <section id="canvas-wrapper">
 
@@ -292,47 +413,41 @@
 
         </section>
 
-        <!-- ========================= -->
+        <!-- =============================================== -->
         <!-- Right Sidebar -->
-        <!-- ========================= -->
+        <!-- =============================================== -->
 
         <aside id="sidebar-right">
 
-            <!-- ===== レイヤー ===== -->
+                        <!-- ========================= -->
+            <!-- Layer -->
+            <!-- ========================= -->
 
             <section class="panel">
 
                 <div class="panel-header">
 
                     <h2>
+
                         レイヤー
+
                     </h2>
-
-                    <div class="panel-actions">
-
-                        <button id="layer-up">
-                            ▲
-                        </button>
-
-                        <button id="layer-down">
-                            ▼
-                        </button>
-
-                    </div>
 
                 </div>
 
                 <div
-                    id="layer-list"
-                    class="panel-body">
 
-                    <!-- script.js -->
+                    id="layer-list"
+
+                    class="panel-body">
 
                 </div>
 
             </section>
 
-            <!-- ===== プロパティ ===== -->
+            <!-- ========================= -->
+            <!-- Property -->
+            <!-- ========================= -->
 
             <section class="panel">
 
@@ -347,33 +462,28 @@
                 </div>
 
                 <div
+
                     id="property-panel"
+
                     class="panel-body">
 
                     <div class="property-row">
 
-                        <label>
-
-                            名前
-
-                        </label>
+                        <label>名前</label>
 
                         <input
+
                             id="property-name"
+
                             type="text">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
+                        <label>種類</label>
 
-                            種類
-
-                        </label>
-
-                        <span
-                            id="property-type">
+                        <span id="property-type">
 
                             -
 
@@ -383,87 +493,78 @@
 
                     <div class="property-row">
 
-                        <label>
-
-                            X
-
-                        </label>
+                        <label>X</label>
 
                         <input
+
                             id="property-x"
+
                             type="number">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
-
-                            Y
-
-                        </label>
+                        <label>Y</label>
 
                         <input
+
                             id="property-y"
+
                             type="number">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
-
-                            幅
-
-                        </label>
+                        <label>幅</label>
 
                         <input
+
                             id="property-width"
+
                             type="number">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
-
-                            高さ
-
-                        </label>
+                        <label>高さ</label>
 
                         <input
+
                             id="property-height"
+
                             type="number">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
-
-                            回転
-
-                        </label>
+                        <label>回転</label>
 
                         <input
+
                             id="property-rotate"
+
                             type="number">
 
                     </div>
 
                     <div class="property-row">
 
-                        <label>
-
-                            透明度
-
-                        </label>
+                        <label>透明度</label>
 
                         <input
+
                             id="property-opacity"
+
                             type="range"
+
                             min="0"
+
                             max="100"
+
                             value="100">
 
                     </div>
@@ -472,7 +573,9 @@
 
             </section>
 
-            <!-- ===== 履歴 ===== -->
+            <!-- ========================= -->
+            <!-- History -->
+            <!-- ========================= -->
 
             <section class="panel">
 
@@ -487,7 +590,9 @@
                 </div>
 
                 <div
+
                     id="history-panel"
+
                     class="panel-body">
 
                 </div>
@@ -498,15 +603,15 @@
 
     </main>
 
-    <!-- ========================= -->
-    <!-- Status Bar -->
-    <!-- ========================= -->
+        <!-- ====================================================== -->
+    <!-- 【006】Status -->
+    <!-- ====================================================== -->
 
-    <footer id="statusbar">
+    <footer id="status-bar">
 
-        <div class="status-item">
+        <span>
 
-            Zoom
+            Zoom :
 
             <span id="status-zoom">
 
@@ -514,9 +619,9 @@
 
             </span>
 
-        </div>
+        </span>
 
-        <div class="status-item">
+        <span>
 
             X :
 
@@ -526,9 +631,9 @@
 
             </span>
 
-        </div>
+        </span>
 
-        <div class="status-item">
+        <span>
 
             Y :
 
@@ -538,9 +643,9 @@
 
             </span>
 
-        </div>
+        </span>
 
-        <div class="status-item">
+        <span>
 
             選択 :
 
@@ -550,326 +655,97 @@
 
             </span>
 
-        </div>
+        </span>
 
-        <div class="status-item">
+        <span>
 
             保存 :
 
             <span id="status-save">
 
-                保存済み
+                新規
 
             </span>
 
-        </div>
-
-        <div class="status-item">
-
-            Version 1.0
-
-        </div>
+        </span>
 
     </footer>
 
-    <!-- ========================= -->
+    <!-- ====================================================== -->
     <!-- Toast -->
-    <!-- ========================= -->
+    <!-- ====================================================== -->
 
-    <div id="toast-container">
+    <div id="toast-container"></div>
 
-    </div>
+    <!-- ====================================================== -->
+    <!-- JSON Loader -->
+    <!-- ====================================================== -->
 
-    <!-- ========================= -->
-    <!-- Loading -->
-    <!-- ========================= -->
+    <input
 
-    <div
-        id="loading-screen"
-        class="hidden">
+        id="json-loader"
 
-        <div class="loading-window">
+        type="file"
 
-            <h2>
+        accept=".json"
 
-                Loading...
+        hidden>
 
-            </h2>
+    <!-- ====================================================== -->
+    <!-- Inside Editor -->
+    <!-- ====================================================== -->
 
-            <div class="loading-bar">
+    <dialog id="inside-dialog">
 
-                <div
-                    id="loading-progress">
+        <h2>
 
-                </div>
+            校舎内部編集
 
-            </div>
+        </h2>
+
+        <div id="inside-editor">
 
         </div>
 
-    </div>
-
-    <!-- ========================= -->
-    <!-- Setting Modal -->
-    <!-- ========================= -->
-
-    <dialog id="settings-dialog">
-
         <form method="dialog">
 
-            <h2>
+            <button>
 
-                設定
+                閉じる
 
-            </h2>
-
-            <div class="setting-row">
-
-                <label>
-
-                    ダークモード
-
-                </label>
-
-                <input
-                    id="darkmode"
-                    type="checkbox">
-
-            </div>
-
-            <div class="setting-row">
-
-                <label>
-
-                    グリッド表示
-
-                </label>
-
-                <input
-                    id="grid-visible"
-                    type="checkbox"
-                    checked>
-
-            </div>
-
-            <div class="setting-row">
-
-                <label>
-
-                    自動保存
-
-                </label>
-
-                <input
-                    id="auto-save"
-                    type="checkbox"
-                    checked>
-
-            </div>
-
-            <menu>
-
-                <button>
-
-                    閉じる
-
-                </button>
-
-            </menu>
+            </button>
 
         </form>
 
     </dialog>
 
-    <!-- ========================= -->
-    <!-- Inside Editor -->
-    <!-- ========================= -->
+    <!-- ====================================================== -->
+    <!-- Setting -->
+    <!-- ====================================================== -->
 
-    <dialog id="inside-editor-dialog">
+    <dialog id="setting-dialog">
+
+        <h2>
+
+            設定
+
+        </h2>
 
         <form method="dialog">
 
-            <header class="dialog-header">
+            <button>
 
-                <h2 id="inside-building-name">
-                    校舎内部編集
-                </h2>
+                閉じる
 
-            </header>
-
-            <nav class="floor-tabs">
-
-                <button
-                    type="button"
-                    class="floor-tab active"
-                    data-floor="1">
-                    1F
-                </button>
-
-                <button
-                    type="button"
-                    class="floor-tab"
-                    data-floor="2">
-                    2F
-                </button>
-
-                <button
-                    type="button"
-                    class="floor-tab"
-                    data-floor="3">
-                    3F
-                </button>
-
-                <button
-                    type="button"
-                    class="floor-tab"
-                    data-floor="roof">
-                    屋上
-                </button>
-
-            </nav>
-
-            <section id="inside-editor-body">
-
-                <aside id="inside-room-list">
-
-                    <!-- script.js -->
-
-                </aside>
-
-                <div id="inside-canvas">
-
-                    <div id="inside-grid"></div>
-
-                    <div id="inside-object-layer"></div>
-
-                    <div id="inside-selection-layer"></div>
-
-                </div>
-
-            </section>
-
-            <menu class="dialog-buttons">
-
-                <button
-                    type="button"
-                    id="inside-save">
-                    保存
-                </button>
-
-                <button
-                    value="cancel">
-                    閉じる
-                </button>
-
-            </menu>
+            </button>
 
         </form>
 
     </dialog>
 
-    <!-- ========================= -->
-    <!-- Confirm Dialog -->
-    <!-- ========================= -->
-
-    <dialog id="confirm-dialog">
-
-        <form method="dialog">
-
-            <h2 id="confirm-title">
-
-                確認
-
-            </h2>
-
-            <p id="confirm-message">
-
-                本当に実行しますか？
-
-            </p>
-
-            <menu>
-
-                <button value="cancel">
-
-                    キャンセル
-
-                </button>
-
-                <button
-                    id="confirm-ok"
-                    value="default">
-
-                    OK
-
-                </button>
-
-            </menu>
-
-        </form>
-
-    </dialog>
-
-    <!-- ========================= -->
-    <!-- About -->
-    <!-- ========================= -->
-
-    <dialog id="about-dialog">
-
-        <form method="dialog">
-
-            <h2>
-
-                虹ケ丘学園
-                Campus Map Builder
-
-            </h2>
-
-            <p>
-
-                Version 1.0
-
-            </p>
-
-            <p>
-
-                GitHub Pages Ready
-
-            </p>
-
-            <p>
-
-                校内マップ作成ツール
-
-            </p>
-
-            <menu>
-
-                <button>
-
-                    閉じる
-
-                </button>
-
-            </menu>
-
-        </form>
-
-    </dialog>
-
-    <!-- ========================= -->
-    <!-- Hidden File Input -->
-    <!-- ========================= -->
-
-    <input
-        id="json-loader"
-        type="file"
-        accept=".json"
-        hidden>
-
-    <!-- ========================= -->
-    <!-- JavaScript -->
-    <!-- ========================= -->
+    <!-- ====================================================== -->
+    <!-- Script -->
+    <!-- ====================================================== -->
 
     <script src="script.js"></script>
 
