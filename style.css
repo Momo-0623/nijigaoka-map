@@ -1,85 +1,42 @@
-/* =========================================================
-   虹ケ丘学園 Campus Map Builder v1.0
-   style.css
-========================================================= */
-
-:root{
-
-    --header-height:70px;
-    --toolbar-height:56px;
-    --status-height:32px;
-
-    --sidebar-left-width:280px;
-    --sidebar-right-width:320px;
-
-    --color-main:#2563eb;
-    --color-main-dark:#1d4ed8;
-
-    --color-bg:#eef3fb;
-    --color-panel:#ffffff;
-    --color-border:#d7dce5;
-
-    --color-text:#2c2c2c;
-    --color-sub:#666666;
-
-    --color-success:#2ecc71;
-    --color-danger:#e74c3c;
-    --color-warning:#f39c12;
-
-    --shadow:
-        0 2px 8px rgba(0,0,0,.08);
-
-    --radius:12px;
-
-}
-
-/* ========================================================= */
+/* ==========================================================
+【001】Reset
+========================================================== */
 
 *{
 
     margin:0;
+
     padding:0;
 
     box-sizing:border-box;
 
 }
 
-html{
-
-    width:100%;
-    height:100%;
-
-}
-
+html,
 body{
 
     width:100%;
+
     height:100%;
 
     overflow:hidden;
 
     font-family:
         "Yu Gothic UI",
-        "Yu Gothic",
+        "Meiryo",
         sans-serif;
 
-    background:var(--color-bg);
+    background:#eceff4;
 
-    color:var(--color-text);
+    color:#222;
 
 }
 
-/* ========================================================= */
-
 button{
 
-    cursor:pointer;
-
-    border:none;
-
-    background:none;
-
     font:inherit;
+
+    cursor:pointer;
 
 }
 
@@ -95,35 +52,69 @@ input{
 
 }
 
-/* ========================================================= */
-/* APP */
-/* ========================================================= */
+/* ==========================================================
+【002】Theme
+========================================================== */
 
-#app{
+:root{
 
-    width:100vw;
+    --header:#2563eb;
 
-    height:100vh;
+    --toolbar:#ffffff;
 
-    display:grid;
+    --sidebar:#f8f9fb;
 
-    grid-template-rows:
+    --panel:#ffffff;
 
-        var(--header-height)
+    --border:#d9dce3;
 
-        var(--toolbar-height)
+    --shadow:0 2px 8px rgba(0,0,0,.08);
 
-        1fr
+    --selected:#4f8cff;
 
-        var(--status-height);
+    --grid:#d8dde8;
+
+    --text:#222;
 
 }
 
-/* ========================================================= */
-/* HEADER */
-/* ========================================================= */
+/* ==========================================================
+【003】App Layout
+========================================================== */
+
+#app{
+
+    display:flex;
+
+    flex-direction:column;
+
+    width:100%;
+
+    height:100vh;
+
+}
+
+#main-layout{
+
+    flex:1;
+
+    display:flex;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================================
+【004】Header
+========================================================== */
 
 #header{
+
+    height:64px;
+
+    background:var(--header);
+
+    color:white;
 
     display:flex;
 
@@ -131,21 +122,9 @@ input{
 
     align-items:center;
 
-    padding:0 20px;
+    padding:0 18px;
 
-    background:white;
-
-    border-bottom:
-
-        1px solid
-
-        var(--color-border);
-
-    box-shadow:
-
-        var(--shadow);
-
-    z-index:100;
+    box-shadow:var(--shadow);
 
 }
 
@@ -155,25 +134,17 @@ input{
 
     align-items:center;
 
-    gap:18px;
+    gap:14px;
 
 }
 
 #school-logo{
 
-    width:48px;
+    width:42px;
 
-    height:48px;
+    height:42px;
 
     object-fit:contain;
-
-}
-
-.title-area{
-
-    display:flex;
-
-    flex-direction:column;
 
 }
 
@@ -181,15 +152,13 @@ input{
 
     font-size:22px;
 
-    font-weight:700;
-
 }
 
 .title-area p{
 
-    font-size:13px;
+    font-size:12px;
 
-    color:var(--color-sub);
+    opacity:.8;
 
 }
 
@@ -197,43 +166,41 @@ input{
 
     display:flex;
 
-    gap:10px;
+    gap:8px;
 
 }
 
 .header-button{
 
-    padding:
+    border:none;
 
-        9px 16px;
+    border-radius:8px;
 
-    border-radius:
+    background:white;
 
-        var(--radius);
+    color:#2563eb;
 
-    background:
+    padding:8px 14px;
 
-        var(--color-main);
-
-    color:white;
-
-    transition:.2s;
+    font-weight:bold;
 
 }
 
 .header-button:hover{
 
-    background:
-
-        var(--color-main-dark);
+    opacity:.9;
 
 }
 
-/* ========================================================= */
-/* TOOLBAR */
-/* ========================================================= */
+/* ==========================================================
+【005】Toolbar
+========================================================== */
 
 #toolbar{
+
+    height:48px;
+
+    background:var(--toolbar);
 
     display:flex;
 
@@ -241,45 +208,27 @@ input{
 
     gap:8px;
 
-    padding:0 16px;
+    padding:0 12px;
 
-    background:#fafafa;
-
-    border-bottom:
-
-        1px solid
-
-        var(--color-border);
+    border-bottom:1px solid var(--border);
 
 }
 
 .tool-button{
 
-    padding:
-
-        8px 14px;
-
-    border-radius:
-
-        8px;
+    border:1px solid var(--border);
 
     background:white;
 
-    border:
+    border-radius:6px;
 
-        1px solid
-
-        var(--color-border);
-
-    transition:.2s;
+    padding:6px 12px;
 
 }
 
 .tool-button:hover{
 
-    background:
-
-        #f2f5fb;
+    background:#eef4ff;
 
 }
 
@@ -287,63 +236,27 @@ input{
 
     width:1px;
 
-    height:26px;
+    height:24px;
 
-    background:
-
-        var(--color-border);
-
-    margin:
-
-        0 6px;
+    background:var(--border);
 
 }
 
-#zoom-label{
-
-    width:60px;
-
-    text-align:center;
-
-}
-
-/* ========================================================= */
-/* MAIN LAYOUT */
-/* ========================================================= */
-
-#main-layout{
-
-    display:grid;
-
-    grid-template-columns:
-
-        var(--sidebar-left-width)
-
-        1fr
-
-        var(--sidebar-right-width);
-
-    overflow:hidden;
-
-}
-
-/* ========================================================= */
-/* LEFT SIDEBAR */
-/* ========================================================= */
+/* ==========================================================
+【006】Left Sidebar
+========================================================== */
 
 #sidebar-left{
+
+    width:260px;
+
+    background:var(--sidebar);
+
+    border-right:1px solid var(--border);
 
     display:flex;
 
     flex-direction:column;
-
-    background:var(--color-panel);
-
-    border-right:
-
-        1px solid
-
-        var(--color-border);
 
     overflow:hidden;
 
@@ -353,45 +266,35 @@ input{
 
     display:grid;
 
-    grid-template-columns:
+    grid-template-columns:repeat(2,1fr);
 
-        repeat(2,1fr);
+    gap:6px;
 
-    gap:8px;
+    padding:10px;
 
-    padding:12px;
-
-    border-bottom:
-
-        1px solid
-
-        var(--color-border);
+    border-bottom:1px solid var(--border);
 
 }
 
 .sidebar-tab{
 
-    padding:10px;
+    border:none;
 
-    border-radius:10px;
+    border-radius:6px;
 
-    background:#f6f8fc;
+    background:white;
+
+    padding:8px;
 
     transition:.2s;
 
 }
 
-.sidebar-tab:hover{
-
-    background:#edf2ff;
-
-}
-
 .sidebar-tab.active{
 
-    background:var(--color-main);
+    background:var(--header);
 
-    color:#fff;
+    color:white;
 
 }
 
@@ -401,131 +304,219 @@ input{
 
     overflow-y:auto;
 
-    padding:16px;
+    padding:10px;
 
 }
-
-/* ========================================================= */
-/* TOOL CATEGORY */
-/* ========================================================= */
 
 .tool-category{
 
-    display:grid;
-
-    gap:10px;
-
-}
-
-.tool-item{
-
     display:flex;
 
-    align-items:center;
+    flex-direction:column;
 
-    gap:12px;
-
-    padding:12px;
-
-    background:#fff;
-
-    border:
-
-        1px solid
-
-        var(--color-border);
-
-    border-radius:10px;
-
-    transition:.15s;
+    gap:8px;
 
 }
 
-.tool-item:hover{
+/* ==========================================================
+【007】Canvas
+========================================================== */
 
-    transform:translateY(-2px);
-
-    box-shadow:var(--shadow);
-
-}
-
-.tool-item img{
-
-    width:32px;
-
-    height:32px;
-
-    object-fit:contain;
-
-}
-
-.tool-name{
+#canvas-wrapper{
 
     flex:1;
 
-    font-size:14px;
+    overflow:auto;
+
+    background:#d9e0ea;
+
+    position:relative;
 
 }
 
-.favorite-button{
+#canvas-scroll{
 
-    font-size:18px;
+    width:3000px;
+
+    height:3000px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
 }
 
-/* ========================================================= */
-/* RIGHT SIDEBAR */
-/* ========================================================= */
+#canvas{
+
+    width:2500px;
+
+    height:2500px;
+
+    background:white;
+
+    position:relative;
+
+    box-shadow:var(--shadow);
+
+    transform-origin:top left;
+
+}
+
+#grid-layer,
+
+#guide-layer,
+
+#object-layer,
+
+#selection-layer,
+
+#preview-layer{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+#grid-layer{
+
+    background-image:
+
+        linear-gradient(
+
+            var(--grid) 1px,
+
+            transparent 1px
+
+        ),
+
+        linear-gradient(
+
+            90deg,
+
+            var(--grid) 1px,
+
+            transparent 1px
+
+        );
+
+    background-size:40px 40px;
+
+    pointer-events:none;
+
+}
+
+/* ==========================================================
+【008】Map Object
+========================================================== */
+
+.map-object{
+
+    position:absolute;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:#ffffff;
+
+    border:2px solid #5b6b83;
+
+    border-radius:8px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    user-select:none;
+
+    cursor:move;
+
+    transition:
+
+        box-shadow .15s,
+
+        border-color .15s;
+
+}
+
+.map-object:hover{
+
+    box-shadow:0 0 8px rgba(0,0,0,.15);
+
+}
+
+.map-object.selected{
+
+    border-color:var(--selected);
+
+    box-shadow:0 0 0 3px rgba(79,140,255,.25);
+
+}
+
+.map-object.locked{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+}
+
+/* ==========================================================
+【009】Right Sidebar
+========================================================== */
 
 #sidebar-right{
 
-    display:flex;
+    width:300px;
 
-    flex-direction:column;
+    background:var(--sidebar);
 
-    gap:14px;
-
-    padding:14px;
-
-    background:#fafcff;
-
-    border-left:
-
-        1px solid
-
-        var(--color-border);
+    border-left:1px solid var(--border);
 
     overflow:auto;
 
-}
+    padding:10px;
 
-/* ========================================================= */
-/* PANEL */
-/* ========================================================= */
+}
 
 .panel{
 
-    display:flex;
+    background:var(--panel);
 
-    flex-direction:column;
+    border:1px solid var(--border);
 
-    background:#fff;
+    border-radius:8px;
 
-    border:
-
-        1px solid
-
-        var(--color-border);
-
-    border-radius:12px;
+    margin-bottom:12px;
 
     overflow:hidden;
-
-    box-shadow:var(--shadow);
 
 }
 
 .panel-header{
+
+    background:#f4f6fa;
+
+    padding:10px;
+
+    font-weight:bold;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.panel-body{
+
+    padding:10px;
+
+}
+
+.property-row{
 
     display:flex;
 
@@ -533,245 +524,35 @@ input{
 
     align-items:center;
 
-    padding:12px 16px;
-
-    background:#f6f8fc;
-
-    border-bottom:
-
-        1px solid
-
-        var(--color-border);
-
-}
-
-.panel-header h2{
-
-    font-size:15px;
-
-}
-
-.panel-actions{
-
-    display:flex;
-
-    gap:6px;
-
-}
-
-.panel-actions button{
-
-    width:30px;
-
-    height:30px;
-
-    border-radius:8px;
-
-    background:#fff;
-
-    border:
-
-        1px solid
-
-        var(--color-border);
-
-}
-
-.panel-body{
-
-    padding:12px;
-
-}
-
-/* ========================================================= */
-/* LAYER */
-/* ========================================================= */
-
-#layer-list{
-
-    display:flex;
-
-    flex-direction:column;
+    margin-bottom:8px;
 
     gap:8px;
-
-}
-
-.layer-item{
-
-    display:grid;
-
-    grid-template-columns:
-
-        26px
-
-        26px
-
-        1fr
-
-        26px;
-
-    align-items:center;
-
-    gap:8px;
-
-    padding:8px;
-
-    border-radius:10px;
-
-    border:
-
-        1px solid
-
-        var(--color-border);
-
-    transition:.15s;
-
-}
-
-.layer-item:hover{
-
-    background:#edf3ff;
-
-}
-
-.layer-item.active{
-
-    background:#dbeafe;
-
-    border-color:var(--color-main);
-
-}
-
-.layer-name{
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    white-space:nowrap;
-
-}
-
-.layer-icon{
-
-    text-align:center;
-
-}
-
-.layer-lock{
-
-    cursor:pointer;
-
-}
-
-.layer-visible{
-
-    cursor:pointer;
-
-}
-
-/* ========================================================= */
-/* PROPERTY PANEL */
-/* ========================================================= */
-
-#property-panel{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-
-}
-
-.property-row{
-
-    display:grid;
-
-    grid-template-columns:80px 1fr;
-
-    align-items:center;
-
-    gap:10px;
 
 }
 
 .property-row label{
 
-    font-size:13px;
-
-    font-weight:600;
-
-    color:var(--color-sub);
+    width:70px;
 
 }
 
-.property-row input,
-.property-row select{
+.property-row input{
 
-    width:100%;
-
-    padding:8px 10px;
-
-    border:1px solid var(--color-border);
-
-    border-radius:8px;
-
-    background:#fff;
-
-    outline:none;
-
-    transition:.2s;
+    flex:1;
 
 }
 
-.property-row input:focus,
-.property-row select:focus{
+/* ==========================================================
+【010】Status Bar
+========================================================== */
 
-    border-color:var(--color-main);
+#status-bar{
 
-    box-shadow:0 0 0 3px rgba(37,99,235,.15);
+    height:34px;
 
-}
+    background:#ffffff;
 
-/* ========================================================= */
-/* HISTORY */
-/* ========================================================= */
-
-#history-panel{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
-
-    max-height:250px;
-
-    overflow-y:auto;
-
-}
-
-.history-item{
-
-    padding:10px;
-
-    border-radius:8px;
-
-    background:#f7f9fd;
-
-    border:1px solid var(--color-border);
-
-    font-size:13px;
-
-}
-
-/* ========================================================= */
-/* STATUS BAR */
-/* ========================================================= */
-
-#statusbar{
+    border-top:1px solid var(--border);
 
     display:flex;
 
@@ -781,41 +562,115 @@ input{
 
     padding:0 16px;
 
-    background:#ffffff;
-
-    border-top:1px solid var(--color-border);
-
     font-size:13px;
 
 }
 
-.status-item{
+#status-bar span{
 
     display:flex;
 
     align-items:center;
 
-    gap:6px;
+    gap:4px;
 
 }
 
-/* ========================================================= */
-/* DIALOG */
-/* ========================================================= */
+/* ==========================================================
+【011】Toast
+========================================================== */
+
+#toast-container{
+
+    position:fixed;
+
+    right:20px;
+
+    bottom:20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+    z-index:9999;
+
+}
+
+.toast{
+
+    min-width:220px;
+
+    background:#222;
+
+    color:white;
+
+    padding:12px 16px;
+
+    border-radius:8px;
+
+    box-shadow:var(--shadow);
+
+    animation:toastIn .2s ease;
+
+}
+
+.toast.success{
+
+    background:#16a34a;
+
+}
+
+.toast.error{
+
+    background:#dc2626;
+
+}
+
+.toast.warning{
+
+    background:#f59e0b;
+
+}
+
+@keyframes toastIn{
+
+    from{
+
+        transform:translateX(40px);
+
+        opacity:0;
+
+    }
+
+    to{
+
+        transform:translateX(0);
+
+        opacity:1;
+
+    }
+
+}
+
+/* ==========================================================
+【012】Dialog
+========================================================== */
 
 dialog{
 
     border:none;
 
-    border-radius:14px;
+    border-radius:12px;
 
-    padding:0;
+    padding:20px;
 
-    box-shadow:
+    min-width:700px;
 
-        0 12px 40px rgba(0,0,0,.25);
+    max-width:90vw;
 
-    overflow:hidden;
+    box-shadow:0 12px 30px rgba(0,0,0,.2);
 
 }
 
@@ -825,464 +680,23 @@ dialog::backdrop{
 
 }
 
-.dialog-header{
-
-    padding:18px 22px;
-
-    background:var(--color-main);
-
-    color:#fff;
-
-}
-
-.dialog-buttons{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:10px;
-
-    padding:16px;
-
-    border-top:1px solid var(--color-border);
-
-}
-
-.dialog-buttons button{
-
-    padding:10px 18px;
-
-    border-radius:10px;
-
-    background:var(--color-main);
-
-    color:white;
-
-}
-
-.dialog-buttons button:hover{
-
-    background:var(--color-main-dark);
-
-}
-
-/* ========================================================= */
-/* SETTINGS */
-/* ========================================================= */
-
-.setting-row{
-
-    display:grid;
-
-    grid-template-columns:1fr auto;
-
-    gap:16px;
-
-    align-items:center;
-
-    padding:14px 22px;
-
-    border-bottom:1px solid #eceff5;
-
-}
-
-/* ========================================================= */
-/* INSIDE EDITOR */
-/* ========================================================= */
-
-#inside-editor-body{
-
-    display:grid;
-
-    grid-template-columns:240px 1fr;
-
-    width:1000px;
-
-    height:650px;
-
-}
-
-#inside-room-list{
-
-    overflow-y:auto;
-
-    border-right:1px solid var(--color-border);
-
-    background:#fafcff;
-
-    padding:14px;
-
-}
-
-#inside-canvas{
-
-    position:relative;
-
-    overflow:auto;
-
-    background:#ffffff;
-
-}
-
-#inside-grid{
-
-    position:absolute;
-
-    inset:0;
-
-    background-image:
-
-        linear-gradient(#e7ebf4 1px, transparent 1px),
-
-        linear-gradient(90deg,#e7ebf4 1px,transparent 1px);
-
-    background-size:32px 32px;
-
-}
-
-#inside-object-layer,
-
-#inside-selection-layer{
-
-    position:absolute;
-
-    inset:0;
-
-}
-
-/* ========================================================= */
-/* TOAST */
-/* ========================================================= */
-
-#toast-container{
-
-    position:fixed;
-
-    top:20px;
-
-    right:20px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:12px;
-
-    z-index:9999;
-
-}
-
-.toast{
-
-    min-width:260px;
-
-    padding:14px 18px;
-
-    border-radius:10px;
-
-    background:#ffffff;
-
-    border-left:6px solid var(--color-main);
-
-    box-shadow:var(--shadow);
-
-    animation:toastIn .25s ease;
-
-}
-
-.toast.success{
-
-    border-left-color:var(--color-success);
-
-}
-
-.toast.warning{
-
-    border-left-color:var(--color-warning);
-
-}
-
-.toast.error{
-
-    border-left-color:var(--color-danger);
-
-}
-
-/* ========================================================= */
-/* LOADING */
-/* ========================================================= */
-
-#loading-screen{
-
-    position:fixed;
-
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:rgba(255,255,255,.85);
-
-    z-index:99999;
-
-}
-
-.loading-window{
-
-    width:360px;
-
-    padding:24px;
-
-    border-radius:16px;
-
-    background:#fff;
-
-    box-shadow:var(--shadow);
-
-}
-
-.loading-bar{
+#inside-editor{
 
     width:100%;
 
-    height:10px;
+    height:500px;
 
-    margin-top:18px;
+    margin:20px 0;
 
-    background:#e8edf6;
+    border:1px solid var(--border);
 
-    border-radius:999px;
-
-    overflow:hidden;
+    background:#fafafa;
 
 }
 
-#loading-progress{
-
-    width:0;
-
-    height:100%;
-
-    background:var(--color-main);
-
-    transition:.25s;
-
-}
-
-/* ========================================================= */
-/* CANVAS */
-/* ========================================================= */
-
-#canvas-wrapper{
-
-    position:relative;
-
-    overflow:hidden;
-
-    background:#dde7f5;
-
-}
-
-#canvas-scroll{
-
-    width:100%;
-
-    height:100%;
-
-    overflow:auto;
-
-    cursor:grab;
-
-}
-
-#canvas-scroll:active{
-
-    cursor:grabbing;
-
-}
-
-#canvas{
-
-    position:relative;
-
-    width:5000px;
-
-    height:5000px;
-
-    background:#ffffff;
-
-}
-
-/* ========================================================= */
-/* GRID */
-/* ========================================================= */
-
-#grid-layer{
-
-    position:absolute;
-
-    inset:0;
-
-    background-image:
-
-        linear-gradient(
-            rgba(0,0,0,.06) 1px,
-            transparent 1px
-        ),
-
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.06) 1px,
-            transparent 1px
-        );
-
-    background-size:40px 40px;
-
-    pointer-events:none;
-
-}
-
-#guide-layer{
-
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-}
-
-#object-layer{
-
-    position:absolute;
-
-    inset:0;
-
-}
-
-#selection-layer{
-
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-}
-
-#preview-layer{
-
-    position:absolute;
-
-    inset:0;
-
-    pointer-events:none;
-
-}
-
-/* ========================================================= */
-/* MAP OBJECT */
-/* ========================================================= */
-
-.map-object{
-
-    position:absolute;
-
-    min-width:90px;
-
-    min-height:40px;
-
-    padding:10px 14px;
-
-    border-radius:12px;
-
-    background:#ffffff;
-
-    border:2px solid var(--color-main);
-
-    box-shadow:var(--shadow);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    user-select:none;
-
-    transition:.15s;
-
-}
-
-.map-object:hover{
-
-    transform:translateY(-2px);
-
-}
-
-.map-object.selected{
-
-    outline:3px solid #ff9800;
-
-}
-
-.map-object.locked{
-
-    opacity:.65;
-
-}
-
-.map-object.hidden{
-
-    display:none;
-
-}
-
-/* ========================================================= */
-/* FLOOR TAB */
-/* ========================================================= */
-
-.floor-tabs{
-
-    display:flex;
-
-    gap:10px;
-
-    padding:14px;
-
-    background:#f7f9fc;
-
-    border-bottom:1px solid var(--color-border);
-
-}
-
-.floor-tab{
-
-    padding:8px 18px;
-
-    border-radius:999px;
-
-    background:#ffffff;
-
-    border:1px solid var(--color-border);
-
-}
-
-.floor-tab.active{
-
-    background:var(--color-main);
-
-    color:#ffffff;
-
-}
-
-/* ========================================================= */
-/* SCROLLBAR */
-/* ========================================================= */
+/* ==========================================================
+【013】Utility
+========================================================== */
 
 ::-webkit-scrollbar{
 
@@ -1294,204 +708,61 @@ dialog::backdrop{
 
 ::-webkit-scrollbar-track{
 
-    background:#edf2f8;
+    background:#eceff4;
 
 }
 
 ::-webkit-scrollbar-thumb{
 
-    background:#c4cfdf;
+    background:#b7c0cf;
 
-    border-radius:999px;
+    border-radius:10px;
 
 }
 
 ::-webkit-scrollbar-thumb:hover{
 
-    background:#9fb0ca;
+    background:#8e99aa;
 
 }
 
-/* ========================================================= */
-/* ANIMATION */
-/* ========================================================= */
+input[type="text"],
+input[type="number"]{
 
-@keyframes toastIn{
+    border:1px solid var(--border);
 
-    from{
+    border-radius:6px;
 
-        opacity:0;
+    padding:6px 8px;
 
-        transform:translateX(30px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateX(0);
-
-    }
+    background:white;
 
 }
 
-@keyframes fadeIn{
+input[type="range"]{
 
-    from{
-
-        opacity:0;
-
-    }
-
-    to{
-
-        opacity:1;
-
-    }
+    width:100%;
 
 }
 
-.fade-in{
+button{
 
-    animation:fadeIn .2s ease;
+    transition:
 
-}
+        background .15s,
 
-/* ========================================================= */
-/* DARK MODE */
-/* ========================================================= */
-
-body.dark{
-
-    --color-bg:#171b24;
-
-    --color-panel:#222734;
-
-    --color-border:#343d4d;
-
-    --color-text:#f4f7fc;
-
-    --color-sub:#b8c2d6;
-
-    background:#171b24;
+        transform .1s;
 
 }
 
-body.dark #header,
-body.dark #toolbar,
-body.dark #statusbar{
+button:active{
 
-    background:#222734;
+    transform:scale(.98);
 
 }
 
-body.dark .panel{
+.hidden{
 
-    background:#222734;
-
-}
-
-body.dark .tool-button{
-
-    background:#2c3342;
-
-    color:#f4f7fc;
+    display:none !important;
 
 }
-
-body.dark .sidebar-tab{
-
-    background:#2c3342;
-
-    color:#f4f7fc;
-
-}
-
-body.dark .tool-item{
-
-    background:#2c3342;
-
-}
-
-body.dark dialog{
-
-    background:#222734;
-
-    color:#f4f7fc;
-
-}
-
-body.dark #canvas{
-
-    background:#ffffff;
-
-}
-
-/* ========================================================= */
-/* MOBILE */
-/* ========================================================= */
-
-@media (max-width:1100px){
-
-    #main-layout{
-
-        grid-template-columns:
-
-            1fr;
-
-    }
-
-    #sidebar-left{
-
-        position:fixed;
-
-        left:-320px;
-
-        top:126px;
-
-        width:300px;
-
-        height:calc(100vh - 126px);
-
-        z-index:1000;
-
-        transition:.25s;
-
-    }
-
-    #sidebar-left.open{
-
-        left:0;
-
-    }
-
-    #sidebar-right{
-
-        display:none;
-
-    }
-
-    #toolbar{
-
-        overflow-x:auto;
-
-        white-space:nowrap;
-
-    }
-
-    #inside-editor-body{
-
-        grid-template-columns:1fr;
-
-        width:95vw;
-
-        height:75vh;
-
-    }
-
-}
-
-/* ========================================================= */
-/* END */
-/* ========================================================= */
