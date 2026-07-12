@@ -513,9 +513,7 @@ function getObject(id){
 
 function deleteObject(id){
 
-    saveHistory();
-
-    App.objects=
+    App.objects =
 
         App.objects.filter(
 
@@ -523,7 +521,7 @@ function deleteObject(id){
 
         );
 
-    renderObjects();
+    refresh();
 
 }
 
@@ -654,8 +652,6 @@ function refresh(){
     updateZoomLabel();
 
     updateProperty();
-
-    updateSaveStatus("保存済み");
 
 }
 
@@ -842,24 +838,22 @@ objectLayer.addEventListener(
 
         );
 
-        dragTarget=
+dragTarget =
+    getObject(id);
 
-            getObject(id);
+if(!dragTarget){
 
-        if(!dragTarget){
+    return;
 
-            return;
+}
 
-        }
+saveHistory();
 
-        dragOffsetX=
+dragOffsetX =
+    event.clientX - dragTarget.x;
 
-            event.clientX-dragTarget.x;
-
-        dragOffsetY=
-
-            event.clientY-dragTarget.y;
-
+dragOffsetY =
+    event.clientY - dragTarget.y;
     }
 
 );
@@ -922,8 +916,6 @@ window.addEventListener(
 
         }
 
-        saveHistory();
-
         updateSaveStatus(
 
             "未保存"
@@ -941,6 +933,10 @@ window.addEventListener(
 /* ===========================================================
 【012】Property
 =========================================================== */
+
+/**
+ * プロパティ表示更新
+ */
 
 function updateProperty(){
 
@@ -1013,6 +1009,278 @@ function updateProperty(){
         object.opacity;
 
 }
+
+/**
+ * プロパティ変更イベント
+ */
+
+propertyName.addEventListener(
+
+    "input",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.name=
+
+            propertyName.value;
+
+        renderObjects();
+
+        refreshLayer();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyX.addEventListener(
+
+    "change",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        saveHistory();
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.x=
+
+            snap(
+
+                Number(
+
+                    propertyX.value
+
+                )
+
+            );
+
+        refresh();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyY.addEventListener(
+
+    "change",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        saveHistory();
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.y=
+
+            snap(
+
+                Number(
+
+                    propertyY.value
+
+                )
+
+            );
+
+        refresh();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyWidth.addEventListener(
+
+    "change",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        saveHistory();
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.width=
+
+            Number(
+
+                propertyWidth.value
+
+            );
+
+        refresh();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyHeight.addEventListener(
+
+    "change",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        saveHistory();
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.height=
+
+            Number(
+
+                propertyHeight.value
+
+            );
+
+        refresh();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyRotate.addEventListener(
+
+    "change",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        saveHistory();
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.rotation=
+
+            Number(
+
+                propertyRotate.value
+
+            );
+
+        refresh();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
+
+propertyOpacity.addEventListener(
+
+    "input",
+
+    ()=>{
+
+        if(App.selected.length!==1){
+
+            return;
+
+        }
+
+        const object=
+
+            getObject(
+
+                App.selected[0]
+
+            );
+
+        object.opacity=
+
+            Number(
+
+                propertyOpacity.value
+
+            );
+
+        renderObjects();
+
+        updateSaveStatus("未保存");
+
+    }
+
+);
 
 /* ===========================================================
 【013】Building
@@ -1136,15 +1404,26 @@ window.addEventListener(
 
         if(event.key==="Delete"){
 
-            App.selected.forEach(
+    if(App.selected.length===0){
 
-                id=>deleteObject(id)
+        return;
 
-            );
+    }
 
-            clearSelection();
+    saveHistory();
 
-        }
+App.objects = App.objects.filter(
+    object =>
+    !App.selected.includes(object.id)
+);
+
+App.selected = [];
+
+refresh();
+
+updateSaveStatus("未保存");
+
+}
 
         /* Ctrl+A */
 
@@ -1250,11 +1529,11 @@ window.addEventListener(
 
 function copySelection(){
 
-    App.clipboard=[];
+    App.clipboard = [];
 
     App.selected.forEach(id=>{
 
-        const object=getObject(id);
+        const object = getObject(id);
 
         if(object){
 
@@ -1286,19 +1565,19 @@ function pasteSelection(){
 
     saveHistory();
 
-    clearSelection();
+    App.selected = [];
 
     App.clipboard.forEach(item=>{
 
-        const copy=clone(item);
+        const copy = clone(item);
 
-        copy.id=generateID();
+        copy.id = generateID();
 
-        copy.x+=40;
+        copy.x += 40;
 
-        copy.y+=40;
+        copy.y += 40;
 
-        copy.z=App.objects.length+1;
+        copy.z = App.objects.length + 1;
 
         App.objects.push(copy);
 
@@ -1313,108 +1592,6 @@ function pasteSelection(){
     showToast("貼り付けました");
 
 }
-
-/* ===========================================================
-【017】JSON Save / Load
-=========================================================== */
-
-/**
- * 保存
- */
-
-function saveJSON(){
-
-    const json={
-
-        version:App.version,
-
-        objects:App.objects
-
-    };
-
-    const blob=new Blob(
-
-        [
-
-            JSON.stringify(
-
-                json,
-
-                null,
-
-                2
-
-            )
-
-        ],
-
-        {
-
-            type:"application/json"
-
-        }
-
-    );
-
-    const url=
-
-        URL.createObjectURL(blob);
-
-    const a=
-
-        document.createElement("a");
-
-    a.href=url;
-
-    a.download="nijigaoka-map.json";
-
-    a.click();
-
-    URL.revokeObjectURL(url);
-
-    updateSaveStatus("保存済み");
-
-    showToast("保存しました");
-
-}
-
-/**
- * 読込
- */
-
-function loadJSON(file){
-
-    const reader=
-
-        new FileReader();
-
-    reader.onload=()=>{
-
-        const json=
-
-            JSON.parse(
-
-                reader.result
-
-            );
-
-        App.objects=
-
-            json.objects||[];
-
-        refresh();
-
-        showToast("読み込みました");
-
-    };
-
-    reader.readAsText(file);
-
-}
-
-/* ===========================================================
-【018】Button Event
-=========================================================== */
 
 btnCopy.addEventListener(
 
@@ -1431,6 +1608,114 @@ btnPaste.addEventListener(
     pasteSelection
 
 );
+
+/* ===========================================================
+【007】Object
+=========================================================== */
+
+/**
+ * オブジェクト作成
+ */
+
+function createObject(type,name,x,y){
+
+    saveHistory();
+
+    const object={
+
+        id:generateID(),
+
+        type:type,
+
+        name:name,
+
+        x:snap(x),
+
+        y:snap(y),
+
+        width:120,
+
+        height:60,
+
+        rotation:0,
+
+        opacity:100,
+
+        visible:true,
+
+        locked:false,
+
+        floor:1,
+
+        z:App.objects.length+1
+
+    };
+
+    App.objects.push(object);
+
+    refresh();
+
+    updateSaveStatus("未保存");
+
+    showToast("追加しました");
+
+    return object;
+
+}
+
+/**
+ * ID検索
+ */
+
+function getObject(id){
+
+    return App.objects.find(
+
+        object=>object.id===id
+
+    );
+
+}
+
+/**
+ * 削除
+ */
+
+function deleteObject(id){
+
+    App.objects =
+
+        App.objects.filter(
+
+            object=>object.id!==id
+
+        );
+
+    refresh();
+
+}
+
+/**
+ * 全削除
+ */
+
+function clearObjects(){
+
+    saveHistory();
+
+    App.objects=[];
+
+    App.selected=[];
+
+    refresh();
+
+    updateSaveStatus("未保存");
+
+}
+
+/* ===========================================================
+【018】Button Event
+=========================================================== */
 
 btnSave.addEventListener(
 
