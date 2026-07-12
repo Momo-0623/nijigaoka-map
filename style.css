@@ -766,3 +766,9 @@ button:active{
     display:none !important;
 
 }
+
+.hide-grid #grid-layer{
+
+    display:none;
+
+}
